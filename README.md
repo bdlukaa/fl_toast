@@ -5,7 +5,7 @@
       <img src="https://img.shields.io/discord/809528329337962516?label=discord&logo=discord" />
     </a>
     <a title="Pub" href="https://pub.dartlang.org/packages/fl_toast" >
-      <img src="https://img.shields.io/pub/v/flutter_toast.svg?style=popout&include_prereleases" />
+      <img src="https://img.shields.io/pub/v/fl_toast.svg?style=popout&include_prereleases" />
     </a>
     <a title="Github License">
       <img src="https://img.shields.io/github/license/bdlukaa/fl_toast" />
