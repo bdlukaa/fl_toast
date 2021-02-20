@@ -4,11 +4,11 @@
     <a title="Discord" href="https://discord.gg/674gpDQUVq">
       <img src="https://img.shields.io/discord/809528329337962516?label=discord&logo=discord" />
     </a>
-    <a title="Pub" href="https://pub.dartlang.org/packages/flutter_toast" >
+    <a title="Pub" href="https://pub.dartlang.org/packages/fl_toast" >
       <img src="https://img.shields.io/pub/v/flutter_toast.svg?style=popout&include_prereleases" />
     </a>
     <a title="Github License">
-      <img src="https://img.shields.io/github/license/bdlukaa/flutter_toast" />
+      <img src="https://img.shields.io/github/license/bdlukaa/fl_toast" />
     </a>
     <a title="PRs are welcome">
       <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
