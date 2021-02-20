@@ -1,7 +1,7 @@
-name: flutter_toast
+name: fl_toast
 description: Easy Toast library for flutter
 version: 1.0.0
-repository: https://github.com/bdlukaa/flutter_toast
+repository: https://github.com/bdlukaa/fl_toast
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
