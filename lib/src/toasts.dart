@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'toast.dart';
 
@@ -10,11 +9,16 @@ Future<void> showSequencialToasts({
 }) async {
   assert(toasts != null);
   assert(context != null);
-  for (var toast in toasts)
+  for (var toast in toasts) {
+    assert(
+      toast.duration != null,
+      'To show sequencial toasts, the toast duration can NOT be null',
+    );
     await showToastWidget(
       toast: toast,
       context: context,
     );
+  }
 }
 
 /// Show a text toast. The toast is defined according to the platform.
@@ -37,10 +41,11 @@ Future<void> showTextToast({
   EdgeInsets padding,
   EdgeInsets margin,
   ToastAnimationBuilder animationBuilder,
-  bool usePlataform = false,
+  bool usePlatform = false,
 }) {
   assert(text != null);
   assert(context != null);
+  assert(usePlatform != null);
   final textWidget = Text(
     text,
     style: style,
@@ -51,7 +56,7 @@ Future<void> showTextToast({
     strutStyle: strutStyle,
     textScaleFactor: textScaleFactor,
   );
-  if (usePlataform)
+  if (usePlatform)
     return showPlatformToast(
       child: textWidget,
       context: context,
@@ -91,7 +96,9 @@ Future<void> showPlatformToast({
 }) {
   assert(child != null);
   assert(context != null);
-  if (Platform.isAndroid || Platform.isFuchsia || child is AndroidToast) {
+  if ([TargetPlatform.android, TargetPlatform.fuchsia]
+          .contains(defaultTargetPlatform) ||
+      child is AndroidToast) {
     return showAndroidToast(
       context: context,
       child: child,
@@ -129,7 +136,7 @@ Future<void> showMultiToast({
     await showToastWidget(toast: toast, context: context);
 }
 
-/// Show an android.
+/// Shows an `AndroidToast`.
 ///
 /// `child` must not be null. It is usually a text widget.
 ///

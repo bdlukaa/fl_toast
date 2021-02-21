@@ -16,8 +16,8 @@ class ToastTheme extends InheritedWidget {
   /// The margin of the widget. Default to `all(10)`
   final EdgeInsets margin;
 
-  ToastTheme({
-    this.child,
+  const ToastTheme({
+    @required this.child,
     this.padding,
     this.margin,
     this.alignment,
@@ -44,6 +44,7 @@ class ToastTheme extends InheritedWidget {
       margin: margin ?? this.margin,
       onDismiss: onDismiss ?? this.onDismiss,
       padding: padding ?? this.padding,
+      child: child,
     );
   }
 }
