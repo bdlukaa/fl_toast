@@ -318,22 +318,64 @@ class StyledToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).brightness;
-    return Container(
+    final theme = Theme.of(context);
+
+    final bool isThemeDark = theme.brightness == Brightness.dark;
+    final Brightness brightness =
+        isThemeDark ? Brightness.light : Brightness.dark;
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color themeBackgroundColor = isThemeDark
+        ? colorScheme.onSurface
+        : Color.alphaBlend(
+            colorScheme.onSurface.withOpacity(0.80), colorScheme.surface);
+
+    final ThemeData inverseTheme = ThemeData(
+      brightness: brightness,
+      backgroundColor: themeBackgroundColor,
+      colorScheme: ColorScheme(
+        primary: colorScheme.onPrimary,
+        primaryVariant: colorScheme.onPrimary,
+        // For the button color, the spec says it should be primaryVariant, but for
+        // backward compatibility on light themes we are leaving it as secondary.
+        secondary:
+            isThemeDark ? colorScheme.primaryVariant : colorScheme.secondary,
+        secondaryVariant: colorScheme.onSecondary,
+        surface: colorScheme.onSurface,
+        background: themeBackgroundColor,
+        error: colorScheme.onError,
+        onPrimary: colorScheme.primary,
+        onSecondary: colorScheme.secondary,
+        onSurface: colorScheme.surface,
+        onBackground: colorScheme.background,
+        onError: colorScheme.error,
+        brightness: brightness,
+      ),
+      snackBarTheme: theme.snackBarTheme,
+    );
+
+    Widget w = Container(
       margin: margin ?? EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       padding: contentPadding ?? EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: backgroundColor ??
-            (theme == Brightness.dark ? Colors.grey[200] : Colors.black45),
-        borderRadius: borderRadius ?? BorderRadius.circular(8),
+            theme?.snackBarTheme?.backgroundColor ??
+            themeBackgroundColor,
+        borderRadius: borderRadius ?? BorderRadius.circular(6),
       ),
-      child: DefaultTextStyle(
-        child: child ?? Container(),
-        style: TextStyle(
-          color: theme == Brightness.dark ? Colors.black : Colors.white,
-        ),
-        textAlign: TextAlign.center,
-      ),
+      child: child == null
+          ? SizedBox()
+          : Material(
+              type: MaterialType.transparency,
+              elevation: theme?.snackBarTheme?.elevation ?? 6,
+              child: DefaultTextStyle(
+                child: child,
+                style: theme?.snackBarTheme?.contentTextStyle ??
+                    inverseTheme.textTheme.subtitle1,
+                textAlign: TextAlign.center,
+              ),
+            ),
     );
+
+    return w;
   }
 }

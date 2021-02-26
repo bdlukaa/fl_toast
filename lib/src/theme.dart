@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'toast.dart';
+
 class ToastTheme extends InheritedWidget {
-  /// Child widget
   final Widget child;
 
+  /// The data of this ToastTheme
+  final ToastThemeData data;
+
+  const ToastTheme({
+    @required this.child,
+    this.data,
+  }) : super(child: child);
+
+  @override
+  bool updateShouldNotify(oldWidget) => true;
+
+  static ToastThemeData of(context) =>
+      context.dependOnInheritedWidgetOfExactType<ToastTheme>()?.data;
+}
+
+class ToastThemeData {
   /// Padding for the text and the container edges
   final EdgeInsets padding;
 
@@ -13,38 +30,34 @@ class ToastTheme extends InheritedWidget {
   /// Callback when toast is dismissed
   final VoidCallback onDismiss;
 
-  /// The margin of the widget. Default to `all(10)`
-  final EdgeInsets margin;
+  /// The default toast animation builder
+  final ToastAnimationBuilder animationBuilder;
 
-  const ToastTheme({
-    @required this.child,
+  /// The duration the toast will be on the screen.
+  final Duration duration;
+
+  const ToastThemeData({
     this.padding,
-    this.margin,
     this.alignment,
     this.onDismiss,
-  }) : super(child: child);
+    this.animationBuilder,
+    this.duration,
+  });
 
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => true;
-
-  static ToastTheme of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<ToastTheme>();
-
-  /// Copy this theme with
-  ToastTheme copyWith({
+  /// Copy [this] with more data
+  ToastThemeData copyWith({
     Alignment alignment,
-    bool dismissOtherOnShow,
-    bool movingOnWindowChange,
     VoidCallback onDismiss,
     EdgeInsets padding,
-    EdgeInsets margin,
+    ToastAnimationBuilder animationBuilder,
+    Duration duration,
   }) {
-    return ToastTheme(
+    return ToastThemeData(
       alignment: alignment ?? this.alignment,
-      margin: margin ?? this.margin,
       onDismiss: onDismiss ?? this.onDismiss,
       padding: padding ?? this.padding,
-      child: child,
+      animationBuilder: animationBuilder ?? this.animationBuilder,
+      duration: duration ?? this.duration,
     );
   }
 }

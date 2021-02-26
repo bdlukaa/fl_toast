@@ -32,15 +32,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('fl_toast example app'),
-      ),
+      appBar: AppBar(title: Text('fl_toast example app')),
       body: ListView(
         padding: EdgeInsets.all(8),
         children: <Widget>[
-          TextButton(
-            child: Text('Show Snackbar'),
-            onPressed: showSnackbar,
+          Builder(
+            builder: (context) => TextButton(
+              child: Text('Show Snackbar'),
+              onPressed: () => showSnackbar(context),
+            ),
           ),
           TextButton(
             child: Text('Open drawer'),
@@ -53,12 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )),
           ),
+          TextButton(
+            child: Text('Show styled toast'),
+            onPressed: () => showStyledToast(
+              child: Text('Awesome styled toast'),
+              context: context,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  void showSnackbar() {
+  void showSnackbar(BuildContext context) {
     showToast(
       padding: EdgeInsets.zero,
       alignment: Alignment(0, 1),
@@ -74,19 +81,25 @@ class _MyHomePageState extends State<MyHomePage> {
           position: Tween<Offset>(
             begin: Offset(0, 1),
             end: Offset(0, 0),
-          ).animate(animation),
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+          )),
         );
       },
       child: Dismissible(
         key: ValueKey<String>('Snackbar'),
         direction: DismissDirection.down,
         child: Material(
-          elevation: 8,
+          elevation: Theme.of(context)?.snackBarTheme?.elevation ?? 6.0,
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: Text('My Awesome Snackbar'),
+            color: Color(0xFF323232),
+            child: Text(
+              'My Awesome Snackbar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
       ),
@@ -170,7 +183,6 @@ class _ToastDrawerState extends State<ToastDrawer> {
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: double.infinity,
-                  // color: Colors.white,
                   child: widget.content,
                 ),
               ),

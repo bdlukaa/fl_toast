@@ -196,19 +196,22 @@ showToast(
       position: Tween<Offset>(
         begin: Offset(0, 1),
         end: Offset(0, 0),
-      ).animate(animation),
+      ).animate(CurvedAnimation(
+        parent: animation,
+        curve: Curves.fastOutSlowIn,
+      )),
     );
   },
   child: Dismissible(
     key: ValueKey<String>('Snackbar'),
     direction: DismissDirection.down,
     child: Material(
-      elevation: 8,
+      elevation: Theme.of(context)?.snackBarTheme?.elevation ?? 6.0,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: Text('My Awesome Snackbar'),
+        color: Color(0xFF323232),
+        child: Text('My Awesome Snackbar', style: TextStyle(color: Colors.white)),
       ),
     ),
   ),

@@ -116,13 +116,16 @@ class Toast extends StatefulWidget {
   /// to be dismissed manually.
   final Duration duration;
 
-  /// The duration of the animation. Default to 250 milliseconds
+  /// The duration of the animation. Default to 250ms
   final Duration animationDuration;
+
+  /// The duration of the reverse animation. Default to 250ms
+  final Duration reverseAnimationDuration;
 
   /// The alignment of the toast. Defaults to `Alignment.bottomCenter`
   final AlignmentGeometry alignment;
 
-  /// The padding of the toast
+  /// The padding of the toast. Default to `EdgeInsets.zero`
   final EdgeInsets padding;
 
   /// A callback called when the toast is dismissed.
@@ -150,15 +153,20 @@ class Toast extends StatefulWidget {
   /// ```
   final ToastAnimationBuilder animationBuilder;
 
+  /// Creates a semantic annotation.
+  final String semanticsLabel;
+
   const Toast({
     Key key,
     @required this.child,
-    this.duration = kDefaultToastDuration,
+    this.duration,
     this.animationDuration = kDefaultToastAnimationDuration,
+    this.reverseAnimationDuration = kDefaultToastAnimationDuration,
     this.alignment = Alignment.bottomCenter,
     this.animationBuilder,
-    this.padding = EdgeInsets.zero,
+    this.padding,
     this.onDismiss,
+    this.semanticsLabel,
   })  : assert(child != null),
         super(key: key);
 
@@ -182,6 +190,8 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
     _animationController = AnimationController(
       vsync: this,
       duration: widget.animationDuration ?? kDefaultToastAnimationDuration,
+      reverseDuration:
+          widget.reverseAnimationDuration ?? kDefaultToastAnimationDuration,
     );
 
     // Start animation
@@ -192,14 +202,25 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
       } catch (e) {}
     });
 
-    // Dismiss toast
-    if (widget.duration != null)
-      Future.delayed(
-        // to allow reverse animation effect
-        (widget.duration) -
-            (widget.animationDuration ?? kDefaultToastAnimationDuration),
-        dismissToastAnim,
-      );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final theme = ToastTheme.of(context);
+      final duration =
+          (widget.duration ?? theme.duration ?? kDefaultToastDuration) -
+              (widget.animationDuration ?? kDefaultToastAnimationDuration) -
+              Duration(milliseconds: 30);
+      Future.delayed(duration, dismissToastAnim);
+    });
+  }
+
+  @override
+  void didUpdateWidget(Toast oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.animationDuration != oldWidget.animationDuration)
+      _animationController.duration = widget.animationDuration;
+
+    if (widget.reverseAnimationDuration != oldWidget.reverseAnimationDuration)
+      _animationController.reverseDuration = widget.reverseAnimationDuration;
   }
 
   @override
@@ -216,11 +237,17 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
     final toastTheme = ToastTheme.of(context);
 
     w = Container(
-      padding: widget.padding ?? toastTheme?.padding ?? EdgeInsets.all(10),
+      padding: widget.padding ?? toastTheme?.padding ?? EdgeInsets.zero,
       alignment:
           widget.alignment ?? toastTheme?.alignment ?? Alignment.bottomCenter,
       child: w,
     );
+
+    if (widget.semanticsLabel != null)
+      w = Semantics(
+        label: widget.semanticsLabel,
+        child: w,
+      );
 
     return w;
   }
@@ -229,6 +256,11 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
   Widget _createAnimWidget(Widget w) {
     if (widget.animationBuilder != null)
       return widget.animationBuilder(context, _animationController, w);
+
+    final toastTheme = ToastTheme.of(context);
+    if (toastTheme.animationBuilder != null)
+      return toastTheme.animationBuilder(context, _animationController, w);
+
     return FadeTransition(
       opacity: _animationController.drive(Tween<double>(begin: 0, end: 1)),
       child: w,
