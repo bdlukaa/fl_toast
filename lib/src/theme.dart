@@ -6,35 +6,35 @@ class ToastTheme extends InheritedWidget {
   final Widget child;
 
   /// The data of this ToastTheme
-  final ToastThemeData data;
+  final ToastThemeData? data;
 
   const ToastTheme({
-    @required this.child,
+    required this.child,
     this.data,
   }) : super(child: child);
 
   @override
   bool updateShouldNotify(oldWidget) => true;
 
-  static ToastThemeData of(context) =>
+  static ToastThemeData? of(context) =>
       context.dependOnInheritedWidgetOfExactType<ToastTheme>()?.data;
 }
 
 class ToastThemeData {
   /// Padding for the text and the container edges
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// Alignment of animation, like size, rotate animation.
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   /// Callback when toast is dismissed
-  final VoidCallback onDismiss;
+  final VoidCallback? onDismiss;
 
   /// The default toast animation builder
-  final ToastAnimationBuilder animationBuilder;
+  final ToastAnimationBuilder? animationBuilder;
 
   /// The duration the toast will be on the screen.
-  final Duration duration;
+  final Duration? duration;
 
   const ToastThemeData({
     this.padding,
@@ -46,11 +46,11 @@ class ToastThemeData {
 
   /// Copy [this] with more data
   ToastThemeData copyWith({
-    Alignment alignment,
-    VoidCallback onDismiss,
-    EdgeInsets padding,
-    ToastAnimationBuilder animationBuilder,
-    Duration duration,
+    Alignment? alignment,
+    VoidCallback? onDismiss,
+    EdgeInsets? padding,
+    ToastAnimationBuilder? animationBuilder,
+    Duration? duration,
   }) {
     return ToastThemeData(
       alignment: alignment ?? this.alignment,

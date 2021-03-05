@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
         key: ValueKey<String>('Snackbar'),
         direction: DismissDirection.down,
         child: Material(
-          elevation: Theme.of(context)?.snackBarTheme?.elevation ?? 6.0,
+          elevation: Theme.of(context).snackBarTheme.elevation ?? 6.0,
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void openDrawer(Widget content) async {
-    OverlayEntry entry;
+    late OverlayEntry entry;
     entry = showPersistentToast(
       context: context,
       toast: ToastDrawer(
@@ -121,9 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class ToastDrawer extends StatefulWidget {
   const ToastDrawer({
-    Key key,
-    @required this.onCloseRequested,
-    @required this.content,
+    Key? key,
+    required this.onCloseRequested,
+    required this.content,
   }) : super(key: key);
 
   final Function onCloseRequested;
@@ -146,7 +146,7 @@ class _ToastDrawerState extends State<ToastDrawer> {
           child: GestureDetector(
             onTap: () async {
               setState(() => backgroundColor = Colors.transparent);
-              await key.currentState.dismissToastAnim();
+              await key.currentState!.dismissToastAnim();
               widget.onCloseRequested();
             },
             child: AnimatedContainer(

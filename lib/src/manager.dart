@@ -14,7 +14,7 @@ class ToastManager {
 
   /// Dismiss all the toasts in the screen
   static void dismissAll() {
-    for (var entry in entries) entry?.remove();
+    for (var entry in entries) entry.remove();
     entries.clear();
   }
 

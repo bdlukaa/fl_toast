@@ -23,18 +23,15 @@ const kDefaultToastAnimationDuration = Duration(milliseconds: 250);
 ///
 /// If `child` is a `Toast`, then all other arguments will be discarted
 Future<void> showToast({
-  @required Widget child,
-  @required BuildContext context,
-  Duration duration,
-  Duration animationDuration,
-  VoidCallback onDismiss,
-  AlignmentGeometry alignment,
-  EdgeInsets padding,
-  ToastAnimationBuilder animationBuilder,
+  required Widget child,
+  required BuildContext context,
+  Duration? duration,
+  Duration? animationDuration,
+  VoidCallback? onDismiss,
+  AlignmentGeometry? alignment,
+  EdgeInsets? padding,
+  ToastAnimationBuilder? animationBuilder,
 }) async {
-  assert(context != null);
-  assert(child != null);
-
   if (child is Toast)
     await showToastWidget(
       toast: child,
@@ -58,14 +55,11 @@ Future<void> showToast({
 
 /// Show a toast widget
 Future<void> showToastWidget({
-  @required Toast toast,
-  @required BuildContext context,
+  required Toast toast,
+  required BuildContext context,
 }) async {
-  assert(toast != null);
-  assert(context != null);
-
   OverlayEntry entry = OverlayEntry(builder: (context) => toast);
-  Overlay.of(context).insert(entry);
+  Overlay.of(context)!.insert(entry);
 
   ToastManager.insert(entry);
 
@@ -80,21 +74,17 @@ Future<void> showToastWidget({
 }
 
 OverlayEntry showPersistentToast({
-  @required Widget toast,
-  @required BuildContext context,
+  required Widget toast,
+  required BuildContext context,
   bool interactive = true,
 }) {
-  assert(toast != null);
-  assert(context != null);
-  assert(interactive != null);
-
   final entry = OverlayEntry(
     builder: (context) => IgnorePointer(
       child: toast,
       ignoring: !interactive,
     ),
   );
-  Overlay.of(context).insert(entry);
+  Overlay.of(context)!.insert(entry);
 
   ToastManager.insert(entry);
 
@@ -114,22 +104,22 @@ class Toast extends StatefulWidget {
   /// The duration of the toast. Default to 4 seconds.
   /// If this is null, it will never be dismissed and needs
   /// to be dismissed manually.
-  final Duration duration;
+  final Duration? duration;
 
   /// The duration of the animation. Default to 250ms
-  final Duration animationDuration;
+  final Duration? animationDuration;
 
   /// The duration of the reverse animation. Default to 250ms
-  final Duration reverseAnimationDuration;
+  final Duration? reverseAnimationDuration;
 
   /// The alignment of the toast. Defaults to `Alignment.bottomCenter`
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   /// The padding of the toast. Default to `EdgeInsets.zero`
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// A callback called when the toast is dismissed.
-  final VoidCallback onDismiss;
+  final VoidCallback? onDismiss;
 
   /// Toast animation builder. Default to fade animation.
   ///
@@ -151,14 +141,14 @@ class Toast extends StatefulWidget {
   ///   );
   /// },
   /// ```
-  final ToastAnimationBuilder animationBuilder;
+  final ToastAnimationBuilder? animationBuilder;
 
   /// Creates a semantic annotation.
-  final String semanticsLabel;
+  final String? semanticsLabel;
 
   const Toast({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.duration,
     this.animationDuration = kDefaultToastAnimationDuration,
     this.reverseAnimationDuration = kDefaultToastAnimationDuration,
@@ -167,8 +157,7 @@ class Toast extends StatefulWidget {
     this.padding,
     this.onDismiss,
     this.semanticsLabel,
-  })  : assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ToastState();
@@ -181,7 +170,7 @@ class Toast extends StatefulWidget {
 
 class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
   /// Animation controller
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -202,10 +191,10 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
       } catch (e) {}
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       final theme = ToastTheme.of(context);
       final duration =
-          (widget.duration ?? theme.duration ?? kDefaultToastDuration) -
+          (widget.duration ?? theme!.duration ?? kDefaultToastDuration) -
               (widget.animationDuration ?? kDefaultToastAnimationDuration) -
               Duration(milliseconds: 30);
       Future.delayed(duration, dismissToastAnim);
@@ -255,11 +244,11 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
   /// Create animation widget
   Widget _createAnimWidget(Widget w) {
     if (widget.animationBuilder != null)
-      return widget.animationBuilder(context, _animationController, w);
+      return widget.animationBuilder!(context, _animationController, w);
 
-    final toastTheme = ToastTheme.of(context);
+    final toastTheme = ToastTheme.of(context)!;
     if (toastTheme.animationBuilder != null)
-      return toastTheme.animationBuilder(context, _animationController, w);
+      return toastTheme.animationBuilder!(context, _animationController, w);
 
     return FadeTransition(
       opacity: _animationController.drive(Tween<double>(begin: 0, end: 1)),
@@ -271,13 +260,13 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
   Future<void> dismissToastAnim() async {
     if (!mounted) return;
     try {
-      await _animationController?.reverse()?.orCancel;
+      await _animationController.reverse().orCancel;
     } on TickerCanceled {}
   }
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 }

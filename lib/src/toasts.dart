@@ -4,11 +4,9 @@ import 'toast.dart';
 
 /// Show one toast after another finished
 Future<void> showSequencialToasts({
-  @required List<Toast> toasts,
-  @required BuildContext context,
+  required List<Toast> toasts,
+  required BuildContext context,
 }) async {
-  assert(toasts != null);
-  assert(context != null);
   for (var toast in toasts) {
     assert(
       toast.duration != null,
@@ -26,26 +24,23 @@ Future<void> showSequencialToasts({
 ///
 /// `text` and `context` must not be null.
 Future<void> showTextToast({
-  @required String text,
-  @required BuildContext context,
-  TextStyle style,
-  TextOverflow overflow,
+  required String text,
+  required BuildContext context,
+  TextStyle? style,
+  TextOverflow? overflow,
   TextAlign textAlign = TextAlign.center,
-  TextDirection textDirection,
-  StrutStyle strutStyle,
-  double textScaleFactor,
-  Duration duration,
-  Duration animationDuration,
-  VoidCallback onDismiss,
-  AlignmentGeometry alignment,
-  EdgeInsets padding,
-  EdgeInsets margin,
-  ToastAnimationBuilder animationBuilder,
+  TextDirection? textDirection,
+  StrutStyle? strutStyle,
+  double? textScaleFactor,
+  Duration? duration,
+  Duration? animationDuration,
+  VoidCallback? onDismiss,
+  AlignmentGeometry? alignment,
+  EdgeInsets? padding,
+  EdgeInsets? margin,
+  ToastAnimationBuilder? animationBuilder,
   bool usePlatform = false,
 }) {
-  assert(text != null);
-  assert(context != null);
-  assert(usePlatform != null);
   final textWidget = Text(
     text,
     style: style,
@@ -84,18 +79,16 @@ Future<void> showTextToast({
 /// If the platform is `android` or `fuchsia` (or the `child` is an AndroidToast),
 /// then an `AndroidToast` will be showed, otherwise, a `StyledToast` will be showed
 Future<void> showPlatformToast({
-  @required Widget child,
-  @required BuildContext context,
-  Duration duration,
-  Duration animationDuration,
-  VoidCallback onDismiss,
-  AlignmentGeometry alignment,
-  EdgeInsets padding,
-  EdgeInsets margin,
-  ToastAnimationBuilder animationBuilder,
+  required Widget child,
+  required BuildContext context,
+  Duration? duration,
+  Duration? animationDuration,
+  VoidCallback? onDismiss,
+  AlignmentGeometry? alignment,
+  EdgeInsets? padding,
+  EdgeInsets? margin,
+  ToastAnimationBuilder? animationBuilder,
 }) {
-  assert(child != null);
-  assert(context != null);
   if ([TargetPlatform.android, TargetPlatform.fuchsia]
           .contains(defaultTargetPlatform) ||
       child is AndroidToast) {
@@ -127,11 +120,9 @@ Future<void> showPlatformToast({
 ///
 /// `toasts` and `context` must not be null.
 Future<void> showMultiToast({
-  @required List<Toast> toasts,
-  @required BuildContext context,
+  required List<Toast> toasts,
+  required BuildContext context,
 }) async {
-  assert(toasts != null);
-  assert(context != null);
   for (Toast toast in toasts)
     await showToastWidget(toast: toast, context: context);
 }
@@ -142,19 +133,17 @@ Future<void> showMultiToast({
 ///
 /// `context` must not be null.
 Future<void> showAndroidToast({
-  @required Widget child,
-  @required BuildContext context,
-  Color backgroundColor,
-  Duration duration,
-  Duration animationDuration,
-  VoidCallback onDismiss,
-  AlignmentGeometry alignment,
-  EdgeInsets padding,
-  EdgeInsets margin,
-  ToastAnimationBuilder animationBuilder,
+  required Widget child,
+  required BuildContext context,
+  Color? backgroundColor,
+  Duration? duration,
+  Duration? animationDuration,
+  VoidCallback? onDismiss,
+  AlignmentGeometry? alignment,
+  EdgeInsets? padding,
+  EdgeInsets? margin,
+  ToastAnimationBuilder? animationBuilder,
 }) {
-  assert(child != null);
-  assert(context != null);
   return showToast(
     child: child is AndroidToast
         ? child
@@ -174,8 +163,8 @@ Future<void> showAndroidToast({
 class AndroidToast extends StatelessWidget {
   /// A toast just like android's
   const AndroidToast({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.backgroundColor,
   }) : super(key: key);
 
@@ -185,9 +174,9 @@ class AndroidToast extends StatelessWidget {
   /// The background color of the toast
   ///
   /// If null, the color will be based on the theme of
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
-  Color nullColor(Brightness theme) {
+  Color? nullColor(Brightness theme) {
     if (theme == Brightness.dark)
       return Colors.grey;
     else
@@ -199,14 +188,14 @@ class AndroidToast extends StatelessWidget {
   /// `context` must not be null
   Future<void> show(
     BuildContext context, {
-    Duration duration,
-    Duration animationDuration,
-    VoidCallback onDismiss,
-    TextDirection textDirection,
-    AlignmentGeometry alignment,
-    EdgeInsets padding,
-    EdgeInsets margin,
-    ToastAnimationBuilder animationBuilder,
+    Duration? duration,
+    Duration? animationDuration,
+    VoidCallback? onDismiss,
+    TextDirection? textDirection,
+    AlignmentGeometry? alignment,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    ToastAnimationBuilder? animationBuilder,
   }) =>
       showAndroidToast(
         context: context,
@@ -241,20 +230,18 @@ class AndroidToast extends StatelessWidget {
 
 /// Shows a styledToast
 Future<void> showStyledToast({
-  @required Widget child,
-  @required BuildContext context,
-  Color backgroundColor,
-  EdgeInsetsGeometry contentPadding,
-  EdgeInsetsGeometry margin,
-  BorderRadiusGeometry borderRadius,
-  Duration duration,
-  Duration animationDuration,
-  VoidCallback onDismiss,
-  AlignmentGeometry alignment,
-  ToastAnimationBuilder animationBuilder,
+  required Widget child,
+  required BuildContext context,
+  Color? backgroundColor,
+  EdgeInsetsGeometry? contentPadding,
+  EdgeInsetsGeometry? margin,
+  BorderRadiusGeometry? borderRadius,
+  Duration? duration,
+  Duration? animationDuration,
+  VoidCallback? onDismiss,
+  AlignmentGeometry? alignment,
+  ToastAnimationBuilder? animationBuilder,
 }) {
-  assert(child != null);
-  assert(context != null);
   return showToast(
     child: child is StyledToast
         ? child
@@ -276,7 +263,7 @@ Future<void> showStyledToast({
 
 class StyledToast extends StatelessWidget {
   const StyledToast({
-    Key key,
+    Key? key,
     this.child,
     this.contentPadding,
     this.margin,
@@ -285,27 +272,27 @@ class StyledToast extends StatelessWidget {
   }) : super(key: key);
 
   /// The content of the widget
-  final Widget child;
+  final Widget? child;
 
   /// The content padding
-  final EdgeInsetsGeometry contentPadding;
+  final EdgeInsetsGeometry? contentPadding;
 
   /// The margin of the toast
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? margin;
 
   /// The borderRadius of the toast
-  final BorderRadiusGeometry borderRadius;
+  final BorderRadiusGeometry? borderRadius;
 
   /// The color of the toast
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   Future<void> show(
     BuildContext context, {
-    Duration duration,
-    Duration animationDuration,
-    VoidCallback onDismiss,
-    AlignmentGeometry alignment,
-    ToastAnimationBuilder animationBuilder,
+    Duration? duration,
+    Duration? animationDuration,
+    VoidCallback? onDismiss,
+    AlignmentGeometry? alignment,
+    ToastAnimationBuilder? animationBuilder,
   }) =>
       showStyledToast(
         child: this,
@@ -358,7 +345,7 @@ class StyledToast extends StatelessWidget {
       padding: contentPadding ?? EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: backgroundColor ??
-            theme?.snackBarTheme?.backgroundColor ??
+            theme.snackBarTheme.backgroundColor ??
             themeBackgroundColor,
         borderRadius: borderRadius ?? BorderRadius.circular(6),
       ),
@@ -366,11 +353,11 @@ class StyledToast extends StatelessWidget {
           ? SizedBox()
           : Material(
               type: MaterialType.transparency,
-              elevation: theme?.snackBarTheme?.elevation ?? 6,
+              elevation: theme.snackBarTheme.elevation ?? 6,
               child: DefaultTextStyle(
-                child: child,
-                style: theme?.snackBarTheme?.contentTextStyle ??
-                    inverseTheme.textTheme.subtitle1,
+                child: child!,
+                style: theme.snackBarTheme.contentTextStyle ??
+                    inverseTheme.textTheme.subtitle1!,
                 textAlign: TextAlign.center,
               ),
             ),

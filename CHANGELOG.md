@@ -1,5 +1,9 @@
 Date format: DD/MM/YYYY
 
+## [3.0.0] - Null Safety Update - [04/03/2021]
+
+- Null safety 🎉
+
 ## [2.0.0] - Theming Update - [26/02/2021]
 
 - 🔶 `ToastTheme` now works properly
