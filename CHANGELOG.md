@@ -1,5 +1,10 @@
 Date format: DD/MM/YYYY
 
+## [3.0.1] - [06/03/2021]
+
+- **FIX** Null check operator used on a null value
+- **EXAMPLE APP** Created windows and web app
+
 ## [3.0.0] - Null Safety Update - [04/03/2021]
 
 - Null safety 🎉

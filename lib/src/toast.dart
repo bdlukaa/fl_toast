@@ -6,9 +6,7 @@ export 'theme.dart';
 export 'toasts.dart';
 export 'manager.dart';
 
-/// Default toast duration
-///
-/// 4 seconds
+/// Default toast duration. 4 seconds
 const kDefaultToastDuration = Duration(seconds: 4);
 
 /// Default animation duration
@@ -102,8 +100,10 @@ class Toast extends StatefulWidget {
   final Widget child;
 
   /// The duration of the toast. Default to 4 seconds.
-  /// If this is null, it will never be dismissed and needs
+  /// If this is `Duration.zero`, it will never be dismissed and needs
   /// to be dismissed manually.
+  ///
+  /// See [this](https://pub.dev/packages/fl_toast#dismiss-a-toast-programatically) for more info
   final Duration? duration;
 
   /// The duration of the animation. Default to 250ms
@@ -191,14 +191,15 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
       } catch (e) {}
     });
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      final theme = ToastTheme.of(context);
-      final duration =
-          (widget.duration ?? theme!.duration ?? kDefaultToastDuration) -
-              (widget.animationDuration ?? kDefaultToastAnimationDuration) -
-              Duration(milliseconds: 30);
-      Future.delayed(duration, dismissToastAnim);
-    });
+    if (widget.duration != Duration.zero)
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        final theme = ToastTheme.of(context);
+        final duration =
+            (widget.duration ?? theme?.duration ?? kDefaultToastDuration) -
+                (widget.animationDuration ?? kDefaultToastAnimationDuration) -
+                Duration(milliseconds: 30);
+        Future.delayed(duration, dismissToastAnim);
+      });
   }
 
   @override
@@ -246,9 +247,9 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
     if (widget.animationBuilder != null)
       return widget.animationBuilder!(context, _animationController, w);
 
-    final toastTheme = ToastTheme.of(context)!;
-    if (toastTheme.animationBuilder != null)
-      return toastTheme.animationBuilder!(context, _animationController, w);
+    final toastTheme = ToastTheme.of(context);
+    if (toastTheme?.animationBuilder != null)
+      return toastTheme!.animationBuilder!(context, _animationController, w);
 
     return FadeTransition(
       opacity: _animationController.drive(Tween<double>(begin: 0, end: 1)),

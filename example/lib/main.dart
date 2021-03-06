@@ -159,7 +159,7 @@ class _ToastDrawerState extends State<ToastDrawer> {
         Positioned.fill(
           child: Toast(
             key: key,
-            duration: null,
+            duration: Duration.zero,
             alignment: Alignment.topLeft,
             animationDuration: animDuration,
             animationBuilder: (context, animation, child) {

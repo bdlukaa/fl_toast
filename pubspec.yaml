@@ -1,6 +1,6 @@
 name: fl_toast
 description: A simple yet powerful Toast Library for Flutter. Works in all the platforms
-version: 3.0.0
+version: 3.0.1
 repository: https://github.com/bdlukaa/fl_toast
 
 environment:
