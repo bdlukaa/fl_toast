@@ -28,6 +28,7 @@ A simple yet powerful Toast Library for Flutter
   - [Basic usage](#basic-usage)
   - [Platform-styled toast](#show-the-platform-styled-toast)
   - [Multi-toasts](#multi-toasts)
+  - [Toast Provider](#toast-provider)
   - [Animations](#animations)
 - [Cookbook](#cookbook)
   - [Snackbar](#snackbar)
@@ -41,7 +42,8 @@ A simple yet powerful Toast Library for Flutter
 
 ✔️ Easy-to-use - Made for new and advanced developers\
 ✔️ Animations - Supports any kind of animation\
-✔️ Made Fully in flutter - No need to use platform channels to show toasts
+✔️ Made Fully in flutter - No need to use platform channels to show toasts\
+✔️ `BuildContext` is not necessary
 
 ## Usage
 
@@ -102,6 +104,27 @@ await showSequencialToasts(
   context: context,
 );
 ```
+
+### Toast Provider
+
+Ofter some people say: "I'd like to display toasts without context". Well, you can with `ToastProvider`. Just wrap your widgets in a `ToastProvider` and call `ToastProvider.context` in the `context` parameter:
+
+```dart
+MaterialApp(
+  home: ToastProvider(child: Home()),
+),
+```
+
+```dart
+void displayToast() {
+  showStyledToast(
+    child: Text('Awesome styled toast'),
+    context: ToastProvider.context,
+  );
+}
+```
+
+There must be an `Overlay` widget above `ToastProvider`. In the example above, the `Overlay` created by `MaterialApp`'s `Navigator` is used. 
 
 ### Animations
 

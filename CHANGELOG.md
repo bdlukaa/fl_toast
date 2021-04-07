@@ -1,5 +1,9 @@
 Date format: DD/MM/YYYY
 
+## [3.1.0] - [07/03/2021]
+
+- **NEW** `ToastProvider`, a way to show the toasts without context
+- **FIX** Make sure there's an overlay widget above the current context (Fixes [#1](https://github.com/bdlukaa/fl_toast/issues/1))
 ## [3.0.1] - [06/03/2021]
 
 - **FIX** Null check operator used on a null value

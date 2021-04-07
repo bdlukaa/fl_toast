@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: ToastProvider(child: MyHomePage()),
     );
   }
 }
@@ -54,10 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
           ),
           TextButton(
-            child: Text('Show styled toast'),
+            child: Text('Show styled toast without context'),
             onPressed: () => showStyledToast(
               child: Text('Awesome styled toast'),
-              context: context,
+              context: ToastProvider.context,
             ),
           ),
         ],
