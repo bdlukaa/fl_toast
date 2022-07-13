@@ -196,7 +196,7 @@ class ToastState extends State<Toast> with TickerProviderStateMixin<Toast> {
     });
 
     if (widget.duration != Duration.zero)
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         final theme = ToastTheme.of(context);
         final duration =
             (widget.duration ?? theme?.duration ?? kDefaultToastDuration) -
