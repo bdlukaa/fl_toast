@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'toast.dart';
 
 /// Show one toast after another finished
@@ -318,15 +319,13 @@ class StyledToast extends StatelessWidget {
 
     final ThemeData inverseTheme = ThemeData(
       brightness: brightness,
-      backgroundColor: themeBackgroundColor,
+      snackBarTheme: theme.snackBarTheme,
       colorScheme: ColorScheme(
         primary: colorScheme.onPrimary,
-        primaryVariant: colorScheme.onPrimary,
         // For the button color, the spec says it should be primaryVariant, but for
         // backward compatibility on light themes we are leaving it as secondary.
         secondary:
-            isThemeDark ? colorScheme.primaryVariant : colorScheme.secondary,
-        secondaryVariant: colorScheme.onSecondary,
+            isThemeDark ? colorScheme.primaryContainer : colorScheme.secondary,
         surface: colorScheme.onSurface,
         background: themeBackgroundColor,
         error: colorScheme.onError,
@@ -336,8 +335,7 @@ class StyledToast extends StatelessWidget {
         onBackground: colorScheme.background,
         onError: colorScheme.error,
         brightness: brightness,
-      ),
-      snackBarTheme: theme.snackBarTheme,
+      ).copyWith(background: themeBackgroundColor),
     );
 
     Widget w = Container(
@@ -357,7 +355,7 @@ class StyledToast extends StatelessWidget {
               child: DefaultTextStyle(
                 child: child!,
                 style: theme.snackBarTheme.contentTextStyle ??
-                    inverseTheme.textTheme.subtitle1!,
+                    inverseTheme.textTheme.titleMedium!,
                 textAlign: TextAlign.center,
               ),
             ),

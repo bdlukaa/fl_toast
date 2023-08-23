@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'manager.dart';
 import 'theme.dart';
 
-export 'theme.dart';
-export 'toasts.dart';
 export 'manager.dart';
 export 'provider.dart';
+export 'theme.dart';
+export 'toasts.dart';
 
 /// Default toast duration. 4 seconds
 const kDefaultToastDuration = Duration(seconds: 4);
@@ -60,7 +61,7 @@ Future<void> showToastWidget({
   final entry = OverlayEntry(builder: (context) => toast);
 
   assert(debugCheckHasOverlay(context));
-  Overlay.of(context)?.insert(entry);
+  Overlay.of(context).insert(entry);
 
   ToastManager.insert(entry);
 
@@ -86,7 +87,7 @@ OverlayEntry showPersistentToast({
       ignoring: !interactive,
     ),
   );
-  Overlay.of(context)!.insert(entry);
+  Overlay.of(context).insert(entry);
 
   ToastManager.insert(entry);
 
