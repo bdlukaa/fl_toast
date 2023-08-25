@@ -1,5 +1,9 @@
 Date format: DD/MM/YYYY
 
+## [3.2.0] - [25/08/2023]
+
+- **FIX** Flutter 3.0.0 support ([#5](https://github.com/bdlukaa/fl_toast/pull/5))
+
 ## [3.1.0] - [07/03/2021]
 
 - **NEW** `ToastProvider`, a way to show the toasts without context
